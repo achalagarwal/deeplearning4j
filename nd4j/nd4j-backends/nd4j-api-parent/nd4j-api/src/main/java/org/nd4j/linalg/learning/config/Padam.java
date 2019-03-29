@@ -30,41 +30,47 @@ import org.nd4j.shade.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 
 /**
- * The AMSGrad updater<br>
+ * The Padam updater<br>
  * Reference: On the Convergence of Adam and Beyond - https://openreview.net/forum?id=ryQu7f-RZ
  *
  * @author Achal Agarwal
  */
 @Data
 @Builder(builderClassName = "Builder")
-public class Padam extends AMSGrad{
+public class Padam extends AMSGrad {
 
-    public static final double DEFAULT_PADAM_PARTIAL_PARAM = 1.0/8.0;
+    public static final double DEFAULT_PADAM_PARTIAL_PARAM = 1.0 / 8.0;
     public static final double DEFAULT_PADAM_EPSILON = 1e-8;
     public static final double DEFAULT_PADAM_BETA1_MEAN_DECAY = 0.9;
     public static final double DEFAULT_PADAM_BETA2_VAR_DECAY = 0.999;
     public static final double DEFAULT_PADAM_LEARNING_RATE = 1e-3;
 
-    @lombok.Builder.Default protected double learningRate = DEFAULT_PADAM_LEARNING_RATE; // learning rate
+    @lombok.Builder.Default
+    protected double learningRate = DEFAULT_PADAM_LEARNING_RATE; // learning rate
     protected ISchedule learningRateSchedule;
-    @lombok.Builder.Default protected double beta1 = DEFAULT_PADAM_BETA1_MEAN_DECAY; // gradient moving avg decay rate
-    @lombok.Builder.Default protected double beta2 = DEFAULT_PADAM_BETA2_VAR_DECAY; // gradient sqrt decay rate
-    @lombok.Builder.Default protected double epsilon = DEFAULT_PADAM_EPSILON;
-    @lombok.Builder.Default private double param = DEFAULT_PADAM_PARTIAL_PARAM;
+    @lombok.Builder.Default
+    protected double beta1 = DEFAULT_PADAM_BETA1_MEAN_DECAY; // gradient moving avg decay rate
+    @lombok.Builder.Default
+    protected double beta2 = DEFAULT_PADAM_BETA2_VAR_DECAY; // gradient sqrt decay rate
+    @lombok.Builder.Default
+    protected double epsilon = DEFAULT_PADAM_EPSILON;
+    @lombok.Builder.Default
+    private double param = DEFAULT_PADAM_PARTIAL_PARAM;
+
     public Padam() {
         this(DEFAULT_PADAM_LEARNING_RATE, DEFAULT_PADAM_BETA1_MEAN_DECAY, DEFAULT_PADAM_BETA2_VAR_DECAY,
                 DEFAULT_PADAM_EPSILON, DEFAULT_PADAM_PARTIAL_PARAM);
     }
 
-    public Padam(double learningRate){
+    public Padam(double learningRate) {
         this(learningRate, null, DEFAULT_PADAM_BETA1_MEAN_DECAY, DEFAULT_PADAM_BETA2_VAR_DECAY, DEFAULT_PADAM_EPSILON, DEFAULT_PADAM_PARTIAL_PARAM);
     }
 
-    public Padam(double learningRate, double partial_param){
+    public Padam(double learningRate, double partial_param) {
         this(learningRate, null, DEFAULT_PADAM_BETA1_MEAN_DECAY, DEFAULT_PADAM_BETA2_VAR_DECAY, DEFAULT_PADAM_EPSILON, partial_param);
     }
 
-    public Padam(ISchedule learningRateSchedule){
+    public Padam(ISchedule learningRateSchedule) {
         this(Double.NaN, learningRateSchedule, DEFAULT_AMSGRAD_BETA1_MEAN_DECAY, DEFAULT_AMSGRAD_BETA2_VAR_DECAY, DEFAULT_AMSGRAD_EPSILON, DEFAULT_PADAM_PARTIAL_PARAM);
     }
 
@@ -77,7 +83,7 @@ public class Padam extends AMSGrad{
                   @JsonProperty("beta1") double beta1,
                   @JsonProperty("beta2") double beta2,
                   @JsonProperty("epsilon") double epsilon,
-                  @JsonProperty("param") double param){
+                  @JsonProperty("param") double param) {
         this.learningRate = learningRate;
         this.learningRateSchedule = learningRateSchedule;
         this.beta1 = beta1;
@@ -86,47 +92,48 @@ public class Padam extends AMSGrad{
         this.param = param;
     }
 
-    @Override
-    public long stateSize(long numParams) {
-        return 3 * numParams;
-    }
-
-    @Override
-    public GradientUpdater instantiate(INDArray viewArray, boolean initializeViewArray) {
-        PadamUpdater u = new PadamUpdater(this);
-        long[] gradientShape = viewArray.shape();
-        gradientShape = Arrays.copyOf(gradientShape, gradientShape.length);
-        gradientShape[1] /= 3;
-        u.setStateViewArray(viewArray, gradientShape, viewArray.ordering(), initializeViewArray);
-        return u;
-    }
+//    @Override
+//    public long stateSize(long numParams) {
+//        return 3 * numParams;
+//    }
+//
+//    @Override
+//    public GradientUpdater instantiate(INDArray viewArray, boolean initializeViewArray) {
+//        PadamUpdater u = new PadamUpdater(this);
+//        long[] gradientShape = viewArray.shape();
+//        gradientShape = Arrays.copyOf(gradientShape, gradientShape.length);
+//        gradientShape[1] /= 3;
+//        u.setStateViewArray(viewArray, gradientShape, viewArray.ordering(), initializeViewArray);
+//        return u;
+//    }
 
     @Override
     public Padam clone() {
         return new Padam(learningRate, learningRateSchedule, beta1, beta2, epsilon, param);
     }
+}
+//    @Override
+//    public double getLearningRate(int iteration, int epoch) {
+//        if (learningRateSchedule != null) {
+//            return learningRateSchedule.valueAt(iteration, epoch);
+//        }
+//        return learningRate;
+//    }
 
-    @Override
-    public double getLearningRate(int iteration, int epoch){
-        if(learningRateSchedule != null){
-            return learningRateSchedule.valueAt(iteration, epoch);
-        }
-        return learningRate;
-    }
+//
+//    @Override
+//    public boolean hasLearningRate() {
+//        return true;
+//    }
 
-    @Override
-    public boolean hasLearningRate() {
-        return true;
-    }
-
-    @Override
-    public void setLrAndSchedule(double lr, ISchedule lrSchedule) {
-        this.learningRate = lr;
-        this.learningRateSchedule = lrSchedule;
-    }
+//    @Override
+//    public void setLrAndSchedule(double lr, ISchedule lrSchedule) {
+//        this.learningRate = lr;
+//        this.learningRateSchedule = lrSchedule;
+//    }
 
     //Partial builder implementation to give public no-arg constructor
-    public static class Builder {
-        public Builder(){ }
-    }
-}
+//    public static class Builder {
+//        public Builder(){ }
+//    }
+//
