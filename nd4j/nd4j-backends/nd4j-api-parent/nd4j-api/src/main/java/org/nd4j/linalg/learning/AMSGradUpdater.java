@@ -27,6 +27,7 @@ import org.nd4j.linalg.indexing.NDArrayIndex;
 import org.nd4j.linalg.learning.config.AMSGrad;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
+
 /**
  * The AMSGrad updater<br>
  * Reference: On the Convergence of Adam and Beyond - https://openreview.net/forum?id=ryQu7f-RZ
@@ -37,9 +38,9 @@ import org.nd4j.linalg.ops.transforms.Transforms;
 public class AMSGradUpdater implements GradientUpdater<AMSGrad> {
 
     private AMSGrad config;
-    private INDArray m, v, vHat; // moving avg, sqrd gradients, max
+    protected INDArray m, v, vHat; // moving avg, sqrd gradients, max
 
-    private char gradientReshapeOrder;
+    protected char gradientReshapeOrder;
 
     public AMSGradUpdater(AMSGrad config) {
         this.config = config;

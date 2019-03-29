@@ -42,11 +42,11 @@ public class AMSGrad implements IUpdater {
     public static final double DEFAULT_AMSGRAD_BETA1_MEAN_DECAY = 0.9;
     public static final double DEFAULT_AMSGRAD_BETA2_VAR_DECAY = 0.999;
 
-    @lombok.Builder.Default private double learningRate = DEFAULT_AMSGRAD_LEARNING_RATE; // learning rate
-    private ISchedule learningRateSchedule;
-    @lombok.Builder.Default private double beta1 = DEFAULT_AMSGRAD_BETA1_MEAN_DECAY; // gradient moving avg decay rate
-    @lombok.Builder.Default private double beta2 = DEFAULT_AMSGRAD_BETA2_VAR_DECAY; // gradient sqrt decay rate
-    @lombok.Builder.Default private double epsilon = DEFAULT_AMSGRAD_EPSILON;
+    @lombok.Builder.Default protected double learningRate = DEFAULT_AMSGRAD_LEARNING_RATE; // learning rate
+    protected ISchedule learningRateSchedule;
+    @lombok.Builder.Default protected double beta1 = DEFAULT_AMSGRAD_BETA1_MEAN_DECAY; // gradient moving avg decay rate
+    @lombok.Builder.Default protected double beta2 = DEFAULT_AMSGRAD_BETA2_VAR_DECAY; // gradient sqrt decay rate
+    @lombok.Builder.Default protected double epsilon = DEFAULT_AMSGRAD_EPSILON;
 
     public AMSGrad() {
         this(DEFAULT_AMSGRAD_LEARNING_RATE, DEFAULT_AMSGRAD_BETA1_MEAN_DECAY, DEFAULT_AMSGRAD_BETA2_VAR_DECAY,
