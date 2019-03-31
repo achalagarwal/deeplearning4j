@@ -16,9 +16,9 @@
 
 package org.nd4j.linalg.learning.config;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import lombok.val;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.learning.AMSGradUpdater;
@@ -36,7 +36,7 @@ import java.util.Arrays;
  * @author Achal Agarwal
  */
 @Data
-@Builder(builderClassName = "Builder")
+@SuperBuilder
 public class Padam extends AMSGrad {
 
     public static final double DEFAULT_PADAM_PARTIAL_PARAM = 1.0 / 8.0;
@@ -45,15 +45,7 @@ public class Padam extends AMSGrad {
     public static final double DEFAULT_PADAM_BETA2_VAR_DECAY = 0.999;
     public static final double DEFAULT_PADAM_LEARNING_RATE = 1e-3;
 
-    @lombok.Builder.Default
-    protected double learningRate = DEFAULT_PADAM_LEARNING_RATE; // learning rate
-    protected ISchedule learningRateSchedule;
-    @lombok.Builder.Default
-    protected double beta1 = DEFAULT_PADAM_BETA1_MEAN_DECAY; // gradient moving avg decay rate
-    @lombok.Builder.Default
-    protected double beta2 = DEFAULT_PADAM_BETA2_VAR_DECAY; // gradient sqrt decay rate
-    @lombok.Builder.Default
-    protected double epsilon = DEFAULT_PADAM_EPSILON;
+
     @lombok.Builder.Default
     private double param = DEFAULT_PADAM_PARTIAL_PARAM;
 
@@ -84,11 +76,7 @@ public class Padam extends AMSGrad {
                   @JsonProperty("beta2") double beta2,
                   @JsonProperty("epsilon") double epsilon,
                   @JsonProperty("param") double param) {
-        this.learningRate = learningRate;
-        this.learningRateSchedule = learningRateSchedule;
-        this.beta1 = beta1;
-        this.beta2 = beta2;
-        this.epsilon = epsilon;
+        super(learningRate, learningRateSchedule, beta1, beta2, epsilon);
         this.param = param;
     }
 

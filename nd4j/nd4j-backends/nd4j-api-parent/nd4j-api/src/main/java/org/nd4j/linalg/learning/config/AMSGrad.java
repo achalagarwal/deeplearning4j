@@ -18,6 +18,7 @@ package org.nd4j.linalg.learning.config;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import lombok.val;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.learning.AMSGradUpdater;
@@ -34,7 +35,7 @@ import java.util.Arrays;
  * @author Alex Black
  */
 @Data
-@Builder(builderClassName = "Builder")
+@SuperBuilder
 public class AMSGrad implements IUpdater {
 
     public static final double DEFAULT_AMSGRAD_LEARNING_RATE = 1e-3;
@@ -64,8 +65,7 @@ public class AMSGrad implements IUpdater {
     public AMSGrad(double learningRate, double beta1, double beta2, double epsilon) {
         this(learningRate, null, beta1, beta2, epsilon);
     }
-
-    private AMSGrad(@JsonProperty("learningRate") double learningRate,
+    protected AMSGrad(@JsonProperty("learningRate") double learningRate,
                     @JsonProperty("learningRateSchedule") ISchedule learningRateSchedule,
                     @JsonProperty("beta1") double beta1,
                     @JsonProperty("beta2") double beta2,
