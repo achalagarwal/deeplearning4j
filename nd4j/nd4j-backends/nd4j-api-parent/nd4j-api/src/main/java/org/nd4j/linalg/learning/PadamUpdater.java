@@ -35,6 +35,11 @@ import org.nd4j.linalg.ops.transforms.Transforms;
  *
  * @author Achal Agarwal
  */
+
+/*
+TODO: Add Precondition for Parameter p
+*/
+
 @Data
 @Slf4j
 public class PadamUpdater extends AMSGradUpdater {
